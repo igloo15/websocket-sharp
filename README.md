@@ -1,3 +1,5 @@
+## NETCORE Version Fork
+
 ![Logo](websocket-sharp_logo.png)
 
 ## Welcome to websocket-sharp! ##
