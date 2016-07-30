@@ -250,6 +250,7 @@ namespace WebSocketSharp.Net
     internal static NameValueCollection ParseBasicCredentials (string value)
     {
       // Decode the basic-credentials (a Base64 encoded string).
+      
       var userPass = Encoding.Default.GetString (Convert.FromBase64String (value));
 
       // The format is [<domain>\]<username>:<password>.

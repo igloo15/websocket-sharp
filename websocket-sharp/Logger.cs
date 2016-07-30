@@ -197,6 +197,7 @@ namespace WebSocketSharp
 
     private void output (string message, LogLevel level)
     {
+      #if NET40
       lock (_sync) {
         if (_level > level)
           return;
@@ -205,12 +206,14 @@ namespace WebSocketSharp
         try {
           data = new LogData (level, new StackFrame (2, true), message);
           _output (data, _file);
+          
         }
         catch (Exception ex) {
           data = new LogData (LogLevel.Fatal, new StackFrame (0, true), ex.Message);
           Console.WriteLine (data.ToString ());
         }
       }
+      #endif
     }
 
     private static void writeToFile (string value, string path)

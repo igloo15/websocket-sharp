@@ -46,7 +46,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
-using System.Security.Permissions;
+//using System.Security.Permissions;
 using System.Text;
 
 namespace WebSocketSharp.Net
@@ -1158,9 +1158,7 @@ namespace WebSocketSharp.Net
     /// <exception cref="ArgumentNullException">
     /// <paramref name="serializationInfo"/> is <see langword="null"/>.
     /// </exception>
-    [SecurityPermission (
-      SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-    public override void GetObjectData (
+    public void GetObjectData (
       SerializationInfo serializationInfo, StreamingContext streamingContext)
     {
       if (serializationInfo == null)
@@ -1228,7 +1226,7 @@ namespace WebSocketSharp.Net
     /// <param name="sender">
     /// An <see cref="object"/> that represents the source of the deserialization event.
     /// </param>
-    public override void OnDeserialization (object sender)
+    public void OnDeserialization (object sender)
     {
     }
 
@@ -1444,10 +1442,7 @@ namespace WebSocketSharp.Net
     /// <exception cref="ArgumentNullException">
     /// <paramref name="serializationInfo"/> is <see langword="null"/>.
     /// </exception>
-    [SecurityPermission (
-      SecurityAction.LinkDemand,
-      Flags = SecurityPermissionFlag.SerializationFormatter,
-      SerializationFormatter = true)]
+    
     void ISerializable.GetObjectData (
       SerializationInfo serializationInfo, StreamingContext streamingContext)
     {
