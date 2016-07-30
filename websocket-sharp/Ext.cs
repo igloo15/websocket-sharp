@@ -76,7 +76,7 @@ namespace WebSocketSharp
 
     private static byte[] compress (this byte[] data)
     {
-      if (data.LongLength == 0)
+      if (data.Length == 0)
         //return new byte[] { 0x00, 0x00, 0x00, 0xff, 0xff };
         return data;
 
@@ -93,7 +93,7 @@ namespace WebSocketSharp
       stream.Position = 0;
       using (var ds = new DeflateStream (output, CompressionMode.Compress, true)) {
         stream.CopyTo (ds, 1024);
-        ds.Close (); // BFINAL set to 1.
+        ds.Dispose (); // BFINAL set to 1.
         output.Write (_last, 0, 1);
         output.Position = 0;
 
@@ -104,14 +104,14 @@ namespace WebSocketSharp
     private static byte[] compressToArray (this Stream stream)
     {
       using (var output = stream.compress ()) {
-        output.Close ();
+        output.Dispose ();
         return output.ToArray ();
       }
     }
 
     private static byte[] decompress (this byte[] data)
     {
-      if (data.LongLength == 0)
+      if (data.Length == 0)
         return data;
 
       using (var input = new MemoryStream (data))
@@ -136,7 +136,7 @@ namespace WebSocketSharp
     private static byte[] decompressToArray (this Stream stream)
     {
       using (var output = stream.decompress ()) {
-        output.Close ();
+        output.Dispose ();
         return output.ToArray ();
       }
     }
@@ -230,7 +230,7 @@ namespace WebSocketSharp
     internal static void Close (this HttpListenerResponse response, HttpStatusCode code)
     {
       response.StatusCode = (int) code;
-      response.OutputStream.Close ();
+      response.OutputStream.Dispose ();
     }
 
     internal static void CloseWithAuthChallenge (
@@ -290,7 +290,7 @@ namespace WebSocketSharp
       return contains (0);
     }
 
-    internal static T[] Copy<T> (this T[] source, long length)
+    internal static T[] Copy<T> (this T[] source, int length)
     {
       var dest = new T[length];
       Array.Copy (source, 0, dest, 0, length);
@@ -1529,10 +1529,10 @@ namespace WebSocketSharp
     /// <typeparam name="T">
     /// The type of elements in <paramref name="array"/>.
     /// </typeparam>
-    public static T[] SubArray<T> (this T[] array, long startIndex, long length)
+    public static T[] SubArray<T> (this T[] array, int startIndex, int length)
     {
-      long len;
-      if (array == null || (len = array.LongLength) == 0)
+      int len;
+      if (array == null || (len = array.Length) == 0)
         return new T[0];
 
       if (startIndex < 0 || length <= 0 || startIndex + length > len)
